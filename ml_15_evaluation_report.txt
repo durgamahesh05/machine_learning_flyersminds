@@ -1,0 +1,78 @@
+Customer Churn Model Evaluation Report
+=======================================
+
+Dataset
+-------
+Source file: tel.csv
+Rows: 7043
+Features used: 19
+Target: Churn, encoded as No=0 and Yes=1
+Train rows: 5634
+Test rows: 1409
+
+Approach
+--------
+All models were evaluated on the same stratified train/test split.
+Numeric features were standardized with StandardScaler.
+Categorical features were encoded with OneHotEncoder(handle_unknown='ignore').
+Each model was wrapped in a single pipeline so preprocessing is saved together with the classifier.
+
+Models Compared
+---------------
+- Gradient Boosting
+- Logistic Regression
+- XGBoost
+- Random Forest
+- Gaussian NB
+- KNN
+- Extra Trees
+- Decision Tree
+
+Final Leaderboard
+-----------------
+              Model  Accuracy  Precision   Recall  F1-Score  ROC-AUC  CV F1 Mean  Training Time (s)
+  Gradient Boosting  0.806246   0.673540 0.524064  0.589474 0.843212    0.590727           0.876830
+Logistic Regression  0.805536   0.657233 0.558824  0.604046 0.841874    0.591798           0.044519
+            XGBoost  0.784954   0.605970 0.542781  0.572638 0.825449    0.551118           0.105243
+      Random Forest  0.777857   0.603390 0.475936  0.532138 0.816366    0.540957           0.512941
+        Gaussian NB  0.694819   0.458944 0.836898  0.592803 0.807419    0.597406           0.030529
+                KNN  0.763662   0.552699 0.574866  0.563565 0.789767    0.547230           0.028997
+        Extra Trees  0.768630   0.573620 0.500000  0.534286 0.785240    0.516028           0.522416
+      Decision Tree  0.728886   0.489637 0.505348  0.497368 0.657266    0.498631           0.057517
+
+Winner
+------
+Best model: Gradient Boosting
+Accuracy: 0.8062
+Precision: 0.6735
+Recall: 0.5241
+F1-Score: 0.5895
+ROC-AUC: 0.8432
+Training time: 0.8768 seconds
+
+Justification
+-------------
+Gradient Boosting was selected because it achieved the highest ROC-AUC, with F1-score used as the secondary decision metric. ROC-AUC is useful for churn prediction because it measures how well the model separates churn and non-churn customers across thresholds. F1-score is also important because the churn class is less frequent, so accuracy alone can be misleading.
+The runner-up was Logistic Regression with ROC-AUC 0.8419 and F1-score 0.6040.
+
+Confusion Matrix for Best Model
+-------------------------------
+Format: [[True No Churn, False Churn], [False No Churn, True Churn]]
+[[940, 95], [178, 196]]
+
+Classification Report for Best Model
+------------------------------------
+              precision    recall  f1-score      support
+No Churn       0.840787  0.908213  0.873200  1035.000000
+Churn          0.673540  0.524064  0.589474   374.000000
+accuracy       0.806246  0.806246  0.806246     0.806246
+macro avg      0.757163  0.716138  0.731337  1409.000000
+weighted avg   0.796394  0.806246  0.797889  1409.000000
+
+Saved Artifacts
+---------------
+Best model pipeline: ml_15_best_churn_model.joblib
+Evaluation CSV: ml_15_model_evaluation_report.csv
+Classification reports JSON: ml_15_classification_reports.json
+Confusion matrices JSON: ml_15_confusion_matrices.json
+Text report: ml_15_evaluation_report.txt
